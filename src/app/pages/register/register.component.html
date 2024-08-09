@@ -1,1 +1,79 @@
-<p>register works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <h2 class="text-center mb-4">!! Register Here !! </h2>
+            <form [formGroup]="registerFormGroup" (ngSubmit)="handleRegister()">
+                <div class="mb-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstName" aria-describedby="firstName"
+                        formControlName="firstName"
+                        [class.is-invalid]="controls['firstName'].touched && controls['firstName'].invalid">
+                    @if(controls['firstName'].touched && controls['firstName'].invalid){
+                    <div class="form-text text-danger">
+                        @if(controls['firstName'].hasError('required')){
+                        <div>This is mandatory field !!</div>
+                        }
+                        @if(controls['firstName'].hasError('minlength')){
+                        <div>Minimum Length Required : 3 !!</div>
+                        }
+                    </div>
+                    }
+                </div>
+                <div class="mb-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" aria-describedby="lastName"
+                        formControlName="lastName">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="text" class="form-control" id="email" aria-describedby="email" formControlName="email"
+                        [class.is-invalid]="controls['email'].touched && controls['email'].invalid">
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    @if(controls['email'].touched && controls['email'].invalid){
+                    <div class="form-text text-danger">
+                        @if(controls['email'].hasError('required')){
+                        <div>This is mandatory field !!</div>
+                        }
+                        @if(controls['email'].hasError('minlength')){
+                        <div>Minimum Length Required : 5 !!</div>
+                        }
+                    </div>
+                    }
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" aria-describedby="password"
+                        formControlName="password"
+                        [class.is-invalid]="controls['password'].touched && controls['password'].invalid">
+                    @if(controls['password'].touched && controls['password'].invalid){
+                    <div class="form-text text-danger">
+                        @if(controls['password'].hasError('required')){
+                        <div>This is mandatory field !!</div>
+                        }
+                        @if(controls['password'].hasError('minlength')){
+                        <div>Minimum Length Required : 5 !!</div>
+                        }
+                    </div>
+                    }
+                </div>
+                <div class="text-center">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="employee" value=false
+                            formControlName="isManager">
+                        <label class="form-check-label" for="employee">Employee</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="manager" value=true
+                            formControlName="isManager">
+                        <label class="form-check-label" for="manager">Manager</label>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-primary" type="submit"
+                        [disabled]="registerFormGroup.invalid">Register</button>
+                    <button class="btn btn-danger" type="button" (click)="handleReset()">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
