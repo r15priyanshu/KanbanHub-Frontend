@@ -1,1 +1,55 @@
-<p>login works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <h2 class="text-center mb-4">Members Login</h2>
+            <form #loginForm="ngForm" (ngSubmit)="handleLogin(loginForm)">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="text" class="form-control" id="email" aria-describedby="email" name="email"
+                        [(ngModel)]="loginData.email" #email="ngModel" required minlength="5" [class.is-invalid]="email.touched && email.invalid">
+                    @if(email.touched && email.invalid){
+                    <div class="form-text text-danger">
+                        @if(email.hasError('required')){
+                        <div>This is mandatory field !!</div>
+                        }
+                        @if(email.hasError('minlength')){
+                        <div>Minimum Length Required : 5 !!</div>
+                        }
+                    </div>
+                    }
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" aria-describedby="password"
+                        name="password" [(ngModel)]="loginData.password" #password="ngModel" required minlength="5" [class.is-invalid]="password.touched && password.invalid">
+                    @if(password.touched && password.invalid){
+                    <div class="form-text text-danger">
+                        @if(password.hasError('required')){
+                        <div>This is mandatory field !!</div>
+                        }
+                        @if(password.hasError('minlength')){
+                        <div>Minimum Length Required : 5 !!</div>
+                        }
+                    </div>
+                    }
+                </div>
+                <div class="text-center">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="employee" value=false name="isManager"
+                            [(ngModel)]="loginData.isManager">
+                        <label class="form-check-label" for="employee">Employee</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="manager" value=true name="isManager"
+                            [(ngModel)]="loginData.isManager">
+                        <label class="form-check-label" for="manager">Manager</label>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+                    <button class="btn btn-danger" type="button" (click)="handleReset(loginForm)">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
