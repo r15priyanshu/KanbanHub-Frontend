@@ -56,6 +56,30 @@
                     </div>
                     }
                 </div>
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" aria-describedby="confirmPassword"
+                        formControlName="confirmPassword"
+                        [class.is-invalid]="controls['confirmPassword'].touched && controls['confirmPassword'].invalid">
+                    @if(controls['confirmPassword'].touched && controls['confirmPassword'].invalid){
+                    <div class="form-text text-danger">
+                        @if(controls['confirmPassword'].hasError('required')){
+                        <div>This is mandatory field !!</div>
+                        }
+                    </div>
+                    }
+                    @if(controls['confirmPassword'].touched && controls['confirmPassword'].value!==''){
+                        @if(registerFormGroup.hasError('confirmpasswordmismatch')){
+                            <div class="form-text text-danger">
+                                <div>Confirm password doesn't match !!</div>
+                            </div>
+                        }@else{
+                            <div class="form-text text-success">
+                                <div>Confirm password matched !!</div>
+                            </div>
+                        }
+                    }
+                </div>
                 <div class="text-center">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" id="employee" value=false

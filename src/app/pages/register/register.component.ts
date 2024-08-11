@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { checkConfirmPasswordMismatch } from '../../validators/PasswordMismatchValidator';
 
 @Component({
   selector: 'app-register',
@@ -22,6 +23,7 @@ export class RegisterComponent {
     lastName: '',
     email: '',
     password: '',
+    confirmPassword:'',
     isManager: 'false',
   };
 
@@ -40,10 +42,13 @@ export class RegisterComponent {
         Validators.required,
         Validators.minLength(5),
       ]),
+      confirmPassword: new FormControl(this.initialFormValues.confirmPassword, [
+        Validators.required
+      ]),
       isManager: new FormControl(this.initialFormValues.isManager, [
         Validators.required,
       ]),
-    });
+    },{validators:checkConfirmPasswordMismatch});
   }
 
   handleRegister() {
