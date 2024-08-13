@@ -69,16 +69,46 @@
                     </div>
                     }
                     @if(controls['confirmPassword'].touched && controls['confirmPassword'].value!==''){
-                        @if(registerFormGroup.hasError('confirmpasswordmismatch')){
-                            <div class="form-text text-danger">
-                                <div>Confirm password doesn't match !!</div>
-                            </div>
-                        }@else{
-                            <div class="form-text text-success">
-                                <div>Confirm password matched !!</div>
-                            </div>
-                        }
+                    @if(registerFormGroup.hasError('confirmpasswordmismatch')){
+                    <div class="form-text text-danger">
+                        <div>Confirm password doesn't match !!</div>
+                    </div>
+                    }@else{
+                    <div class="form-text text-success">
+                        <div>Confirm password matched !!</div>
+                    </div>
                     }
+                    }
+                </div>
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="city" class="form-label">City</label>
+                            <input type="text" class="form-control" id="city" aria-describedby="city"
+                                formControlName="city"
+                                [class.is-invalid]="controls['city'].touched && controls['city'].invalid">
+                            @if(controls['city'].touched && controls['city'].invalid){
+                            <div class="form-text text-danger">
+                                @if(controls['city'].hasError('required')){
+                                <div>This is mandatory field !!</div>
+                                }
+                            </div>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <label for="state" class="form-label">State</label>
+                            <input type="text" class="form-control" id="state" aria-describedby="state"
+                                formControlName="state"
+                                [class.is-invalid]="controls['state'].touched && controls['state'].invalid">
+                            @if(controls['state'].touched && controls['state'].invalid){
+                            <div class="form-text text-danger">
+                                @if(controls['state'].hasError('required')){
+                                <div>This is mandatory field !!</div>
+                                }
+                            </div>
+                            }
+                        </div>
+                    </div>
                 </div>
                 <div class="text-center">
                     <div class="form-check form-check-inline">
@@ -93,8 +123,7 @@
                     </div>
                 </div>
                 <div class="d-grid gap-2 mt-3">
-                    <button class="btn btn-primary" type="submit"
-                        [disabled]="registerFormGroup.invalid">Register</button>
+                    <button class="btn btn-primary" type="submit">Register</button>
                     <button class="btn btn-danger" type="button" (click)="handleReset()">Reset</button>
                 </div>
             </form>
