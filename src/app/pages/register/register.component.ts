@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -10,8 +10,7 @@ import { checkConfirmPasswordMismatch } from '../../validators/PasswordMismatchV
 import { EmployeeService } from '../../services/employee.service';
 import { EmployeeDto } from '../../dtos/EmployeeDto';
 import { AddressDto } from '../../dtos/AddressDto';
-import Swal from 'sweetalert2';
-import { APPLICATION_NAME } from '../../helpers/globalconstants';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -21,6 +20,8 @@ import { APPLICATION_NAME } from '../../helpers/globalconstants';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
+  private snackBar = inject(MatSnackBar);
+
   registerFormGroup: FormGroup;
 
   private initialFormValues = {
@@ -74,7 +75,7 @@ export class RegisterComponent {
   handleRegister() {
     //console.log(this.registerFormGroup.value)
     if (this.registerFormGroup.invalid) {
-      Swal.fire({title:'!! Validation Failed !!',text: '!! Please Enter Valid Data !!',icon: 'error'});
+      this.snackBar.open('!! Validation Failed !! Please Check Your Inputs !!','OK');
       return;
     }
 
@@ -91,14 +92,13 @@ export class RegisterComponent {
     this.employeeService.registerEmployee(employeeDto).subscribe({
       next: (data) => {
         //console.log(data);
-        Swal.fire({title:'!! Registration Successful !!',text: `Welcome To ${APPLICATION_NAME} , You can now Login !!`,icon: 'success'});
-        this.handleReset()
+        this.snackBar.open('!! Thanks For Registering !! You Can Now Login !!','OK');
+        this.handleReset();
       },
       error: (error) => {
         //console.log('Error');
-        Swal.fire({title:'!! Registration Failed !!',text: 'Something Went Wrong !! Try Again Later !!',icon: 'error'});
       },
-      complete: () => {},
+      complete: () => {console.log('Registration Event Completion !!')},
     });
   }
 
