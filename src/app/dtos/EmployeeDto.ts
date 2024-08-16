@@ -1,4 +1,5 @@
 import { AddressDto } from "./AddressDto"; 
+import { RoleDto } from "./RoleDto";
 
 export class EmployeeDto {
     public employeeId?: number;
@@ -7,6 +8,7 @@ export class EmployeeDto {
     public email: string;
     public password: string;
     public address: AddressDto;
+    public role?:RoleDto;
 
     constructor(
         firstName: string,
