@@ -23,4 +23,8 @@ export class EmployeeDto {
         this.password = password;
         this.address = address;
     }
+
+    static getEmptyEmployee():EmployeeDto{
+        return new EmployeeDto('','','','',new AddressDto('',''));
+    }
 }

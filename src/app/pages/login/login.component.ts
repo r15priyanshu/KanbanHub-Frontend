@@ -3,7 +3,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginService } from '../../services/login.service';
 import { LoginRequestDto } from '../../dtos/LoginRequestDto';
-import { JWT_TOKEN_HEADER_KEY } from '../../helpers/globalconstants';
+import { ERR_EMOJI, JWT_TOKEN_HEADER_KEY, SUCCESS_EMOJI, WARN_EMOJI } from '../../helpers/globalconstants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -29,10 +30,9 @@ export class LoginComponent {
     isManager: 'false',
   };
 
-  constructor(private loginService: LoginService) {}
+  constructor(private loginService: LoginService,private router:Router) {}
 
   handleLogin(loginForm: NgForm) {
-    console.log(this.loginData);
     const { email, password, isManager } = this.loginData;
     if (loginForm.invalid) {
       this.snackBar.open(
@@ -50,16 +50,23 @@ export class LoginComponent {
 
     this.loginService.performLogin(loginRequestDto).subscribe({
       next: (response) => {
-        console.log(response.body);
         const token = response.headers.get(JWT_TOKEN_HEADER_KEY)
         if(token){
+          this.snackBar.open('!! Successfully Logged In !!',SUCCESS_EMOJI);
           this.loginService.saveToken(token);
           this.loginService.saveEmployeeDetails(response.body)
+          this.loginService.isLoggedInSubject.next(true)
+          this.router.navigate(['/admin/dashboard'])
         }
-        
       },
       error: (error) => {
-        console.error(error);
+        if(error.status === 400){
+            this.snackBar.open('!! Invalid Credentials !! Please Check !!',ERR_EMOJI);
+        }else if(error.status === 404){
+            this.snackBar.open('!! Email Not Registered !! Please Check !!',WARN_EMOJI);
+        }else{
+            this.snackBar.open('!! Something Went Wrong While Login !! Please Try After Some Time !!',ERR_EMOJI);
+        }  
       },
       complete: () => {},
     });

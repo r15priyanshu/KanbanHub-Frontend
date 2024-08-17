@@ -1,7 +1,9 @@
 import { UpperCasePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { APPLICATION_NAME } from '../../helpers/globalconstants';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { LoginService } from '../../services/login.service';
+import { EmployeeDto } from '../../dtos/EmployeeDto';
 
 @Component({
   selector: 'app-navbar',
@@ -10,6 +12,26 @@ import { RouterModule } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
-  navBarHeadingName:string=APPLICATION_NAME
+export class NavbarComponent implements OnInit{
+  public navBarHeadingName:string=APPLICATION_NAME
+  public isLoggedIn:boolean=false;
+  public employee : EmployeeDto | null = null;
+
+  constructor(private loginService:LoginService,private router:Router){
+    console.log("Inside constructor of NavbarComponent.")
+  }
+  ngOnInit(): void {
+    console.log("Inside ngOnInit of NavbarComponent.")
+    this.loginService.isLoggedInSubject.subscribe((value)=>{
+      this.employee = this.loginService.getLoggedInEmployeeDetails();
+      this.isLoggedIn = value
+      console.log("Inside ngOnInit of NavbarComponent: Consuming : isLoggedIn = ",this.isLoggedIn);
+    })
+  }
+
+  handleLogout(){
+    this.loginService.isLoggedInSubject.next(false)
+    this.loginService.performLogout();
+    this.router.navigate(['/login'])
+  }
 }

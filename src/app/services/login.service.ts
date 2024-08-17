@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { jwtDecode } from "jwt-decode";
 import {
   BACKEND_BASE_URL,
   EMPLOYEE_DETAILS_KEY_FOR_LOCAL_STORAGE,
@@ -9,11 +10,15 @@ import {
 } from '../helpers/globalconstants';
 import { EmployeeDto } from '../dtos/EmployeeDto';
 import { LoginRequestDto } from '../dtos/LoginRequestDto';
+import { AddressDto } from '../dtos/AddressDto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
+
+  public isLoggedInSubject = new BehaviorSubject<boolean>(this.isEmployeeLoggedIn());
+
   constructor(private httpClient: HttpClient) {}
 
   public performLogin(loginRequestDto:LoginRequestDto): Observable<HttpResponse<any>> {
@@ -54,7 +59,6 @@ export class LoginService {
   public getLoggedInEmployeeDetails(): EmployeeDto | null {
     const details = localStorage.getItem(EMPLOYEE_DETAILS_KEY_FOR_LOCAL_STORAGE);
     if (!details) {
-      this.performLogout();
       return null;
     } else {
       return JSON.parse(details);
@@ -62,11 +66,20 @@ export class LoginService {
   }
 
   public getLoggedInEmployeeRole():string | null{
-   const details = this.getLoggedInEmployeeDetails()
-   if(!details){
-    return null;
-   }else{
-      return details.role?.roleName ?? null;
-   }
+    console.log('Trying To Decode Token !!')
+    const encodedToken=this.getToken()
+    let decodedToken=null
+    if(encodedToken){
+      try{
+        decodedToken=jwtDecode<any>(encodedToken);
+        console.log('Token Decoded and Role Extracted !! Role =',decodedToken.role)
+        return decodedToken.role
+      }catch(error){
+        console.log('Error While Decoding Token !!')
+        return null;
+      }
+    }else{
+      return null;
+    }
   }
 }
