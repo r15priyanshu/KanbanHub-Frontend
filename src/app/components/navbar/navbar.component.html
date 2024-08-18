@@ -18,7 +18,7 @@
                 </li>
                 @if(isLoggedIn){
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/admin/dashboard" routerLinkActive="custom-active-link" [routerLinkActiveOptions]="{exact:true}">DASHBOARD</a>
+                        <a class="nav-link" routerLink="/admin/dashboard" routerLinkActive="custom-active-link" [routerLinkActiveOptions]="{exact:false}">DASHBOARD</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" routerLink="/profile" routerLinkActive="custom-active-link" [routerLinkActiveOptions]="{exact:true}">{{employee?.firstName | uppercase}}</a>

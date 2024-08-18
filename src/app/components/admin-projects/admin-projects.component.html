@@ -1,0 +1,117 @@
+<div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mb-3 d-flex">
+                <button class="btn btn-danger ms-auto" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#addProjectCollapse" aria-expanded="false" aria-controls="collapseExample">
+                    + Create Project
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="collapse" id="addProjectCollapse">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card mb-3 flex-fill rounded-0">
+                    <div class="card-header text-center">ADD NEW PROJECT</div>
+                    <div class="card-body">
+                        <form [formGroup]="projectFormGroup" (ngSubmit)="handleAddProject()">
+                            <div class="mb-3">
+                                <label for="projectName" class="form-label">Project Name</label>
+                                <input type="text" class="form-control rounded-0" id="projectName"
+                                    aria-describedby="firstName" formControlName="projectName"
+                                    [class.is-invalid]="controls['projectName'].touched && controls['projectName'].invalid">
+                                @if(controls['projectName'].touched && controls['projectName'].invalid){
+                                <div class="form-text text-danger">
+                                    @if(controls['projectName'].hasError('required')){
+                                    <div>This is mandatory field !!</div>
+                                    }
+                                    @if(controls['projectName'].hasError('minlength')){
+                                    <div>Minimum Length Required : 3 !!</div>
+                                    }
+                                </div>
+                                }
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Project Description</label>
+                                <div class="form-floating">
+                                    <textarea class="form-control rounded-0" placeholder="Leave a comment here"
+                                        id="description" style="height: 100px" formControlName="description"
+                                        [class.is-invalid]="controls['description'].touched && controls['description'].invalid"></textarea>
+                                </div>
+                                @if(controls['description'].touched && controls['description'].invalid){
+                                <div class="form-text text-danger">
+                                    @if(controls['description'].hasError('required')){
+                                    <div>This is mandatory field !!</div>
+                                    }
+                                    @if(controls['description'].hasError('minlength')){
+                                    <div>Minimum Length Required : 5 !!</div>
+                                    }
+                                </div>
+                                }
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-sm btn-primary m-1" type="submit">ADD</button>
+                                <button class="btn btn-sm btn-danger m-1" type="button"
+                                    (click)="handleReset()">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Project Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (project of projects; track project.projectId) {
+                    <tr>
+                        <th scope="row">{{APP_NAME_SHORT}}{{project.projectId}}</th>
+                        <td>{{project.projectName}}</td>
+                        <td>{{project.startDate | date}}</td>
+                        <td>{{ project.statusActive ?"Active":"Complete" }}</td>
+                        <td>{{project.endDate}}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdropForProjectEdit"
+                                (click)="handleProjectEdit(project.projectId)">Edit Project</button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Edit Project Modal -->
+    <div class="modal fade" id="staticBackdropForProjectEdit" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropForProjectEditLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content  rounded-0">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropForProjectEditLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary">Understood</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

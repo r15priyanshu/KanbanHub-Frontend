@@ -1,4 +1,5 @@
 export const APPLICATION_NAME = 'Kanban-Hub'
+export const APPLICATION_NAME_SHORT = 'KBH'
 
 export const JWT_TOKEN_KEY_FOR_LOCAL_STORAGE = 'token'
 export const JWT_TOKEN_HEADER_KEY = 'Jwt-Token'
@@ -9,6 +10,8 @@ export const BACKEND_BASE_URL = 'http://localhost:8080'
 export const LOGIN_URL = `${BACKEND_BASE_URL}/auth/login`
 export const REGISTER_URL = `${BACKEND_BASE_URL}/auth/register`
 
+export const GET_ALL_PROJECT_URL = `${BACKEND_BASE_URL}/project`
+export const CREATE_PROJECT_URL = `${BACKEND_BASE_URL}/project`
 
 export const NORMAL_ROLE_NAME = 'ROLE_NORMAL'
 export const ADMIN_ROLE_NAME = 'ROLE_ADMIN'
