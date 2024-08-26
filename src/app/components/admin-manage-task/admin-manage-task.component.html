@@ -1,0 +1,106 @@
+<div class="mt-5">
+    <h5>Manage Task</h5>
+    <p>Project ID : {{projectId}}</p>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mb-3 d-flex">
+                <button class="btn btn-sm btn-danger ms-auto" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#addTaskCollapse" aria-expanded="false" aria-controls="collapseExample">
+                    + Add Task
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="collapse" id="addTaskCollapse">
+                <div class="card mb-3 flex-fill rounded-0">
+                    <div class="card-header text-center">ADD NEW TASK</div>
+                    <div class="card-body">
+                        <form [formGroup]="taskFormGroup" (ngSubmit)="handleAddTaskToProject()">
+                            <div class="mb-3">
+                                <label for="taskName" class="form-label">Task Name</label>
+                                <input type="text" class="form-control rounded-0" id="taskName"
+                                    aria-describedby="taskName" formControlName="taskName"
+                                    [class.is-invalid]="controls['taskName'].touched && controls['taskName'].invalid">
+                                @if(controls['taskName'].touched && controls['taskName'].invalid){
+                                <div class="form-text text-danger">
+                                    @if(controls['taskName'].hasError('required')){
+                                    <div>This is mandatory field !!</div>
+                                    }
+                                    @if(controls['taskName'].hasError('minlength')){
+                                    <div>Minimum Length Required : 5 !!</div>
+                                    }
+                                </div>
+                                }
+                            </div>
+                            <div class="mb-3">
+                                <label for="taskDescription" class="form-label">Task Description</label>
+                                <div class="form-floating">
+                                    <textarea class="form-control rounded-0" placeholder="Enter Description Here"
+                                        id="taskDescription" style="height: 100px" formControlName="taskDescription"
+                                        [class.is-invalid]="controls['taskDescription'].touched && controls['taskDescription'].invalid"></textarea>
+                                </div>
+                                @if(controls['taskDescription'].touched && controls['taskDescription'].invalid){
+                                <div class="form-text text-danger">
+                                    @if(controls['taskDescription'].hasError('required')){
+                                    <div>This is mandatory field !!</div>
+                                    }
+                                    @if(controls['taskDescription'].hasError('minlength')){
+                                    <div>Minimum Length Required : 5 !!</div>
+                                    }
+                                </div>
+                                }
+                            </div>
+                            <div class="mb-3">
+                                <label for="taskDueDate" class="form-label">Task DueDate</label>
+                                <input id="taskDueDate" class="form-control" type="date" formControlName="dueDate" />
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-sm btn-primary m-1" type="submit">ADD</button>
+                                <button class="btn btn-sm btn-danger m-1" type="button"
+                                    (click)="handleReset()">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Task Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">Due Date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Assigned To</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (task of allTasksList; track task.taskId) {
+                    <tr>
+                        <th scope="row">{{task.taskId}}</th>
+                        <td>{{task.taskName}}</td>
+                        <td>{{task.startDate | date}}</td>
+                        <td>{{task.dueDate | date}}</td>
+                        <td>{{task.taskStatus}}</td>
+                        <td>{{''}}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdropForProjectEdit">Edit</button>
+                            <a class="btn btn-sm btn-danger m-1" >Open</a>    
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

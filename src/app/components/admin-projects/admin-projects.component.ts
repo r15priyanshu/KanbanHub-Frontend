@@ -11,11 +11,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { APPLICATION_NAME_SHORT } from '../../helpers/globalconstants';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin-projects',
   standalone: true,
-  imports: [DatePipe,ReactiveFormsModule],
+  imports: [DatePipe,ReactiveFormsModule,RouterModule],
   templateUrl: './admin-projects.component.html',
   styleUrl: './admin-projects.component.css',
 })

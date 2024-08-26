@@ -84,9 +84,10 @@
                         <td>{{ project.statusActive ?"Active":"Complete" }}</td>
                         <td>{{project.endDate}}</td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal"
                                 data-bs-target="#staticBackdropForProjectEdit"
                                 (click)="handleProjectEdit(project.projectId)">Edit Project</button>
+                            <a class="btn btn-sm btn-danger m-1" [routerLink]="['/admin/dashboard/manageproject']" [queryParams]="{projectId:project.projectId}">Open</a>    
                         </td>
                     </tr>
                     }

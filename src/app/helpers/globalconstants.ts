@@ -10,8 +10,14 @@ export const BACKEND_BASE_URL = 'http://localhost:8080'
 export const LOGIN_URL = `${BACKEND_BASE_URL}/auth/login`
 export const REGISTER_URL = `${BACKEND_BASE_URL}/auth/register`
 
+export const GET_ALL_EMPLOYEE_URL = `${BACKEND_BASE_URL}/employee`
+
 export const GET_ALL_PROJECT_URL = `${BACKEND_BASE_URL}/project`
+export const GET_PROJECT_BY_ID_URL = (projectId:number) => { return `${BACKEND_BASE_URL}/project/${projectId}` }
 export const CREATE_PROJECT_URL = `${BACKEND_BASE_URL}/project`
+
+export const ADD_EMPLOYEE_TO_PROJECT_URL = (employeeId:number,projectId:number) => { return `${BACKEND_BASE_URL}/businessoperation/addemployee/${employeeId}/project/${projectId}` }
+export const ADD_TASK_TO_PROJECT_URL = (projectId:number) => { return `${BACKEND_BASE_URL}/businessoperation/addtask/project/${projectId}` }
 
 export const NORMAL_ROLE_NAME = 'ROLE_NORMAL'
 export const ADMIN_ROLE_NAME = 'ROLE_ADMIN'

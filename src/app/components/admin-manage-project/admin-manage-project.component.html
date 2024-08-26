@@ -1,1 +1,70 @@
-<p>admin-manage-project works!</p>
+<div>
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <div class="input-group mb-3">
+                <input type="text" name="projectId" [value]="this.selectedProjectId===0?'':this.selectedProjectId" (change)="handleSearchChangeEvent($event)" class="form-control"
+                    placeholder="ENTER PROJECT ID HERE" aria-label="Recipient's username"
+                    aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="button" (click)="handleProjectSearch()">Search</button>
+            </div>
+        </div>
+    </div>
+    @if(searchedProjectDetails){
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                @if(searchedProjectDetails){
+                <h4>Project Details</h4>
+                <p>Project Id : {{searchedProjectDetails.projectId}}</p>
+                <p>Name : {{searchedProjectDetails.projectName}}</p>
+                <p>Description : {{searchedProjectDetails.description}}</p>
+                <p>Start Date : {{searchedProjectDetails.startDate}}</p>
+                <p>End Date : {{searchedProjectDetails.endDate}}</p>
+                <p>Empoyees Working : {{searchedProjectDetails.employees?.length}}</p>
+                <p>Total Tasks : {{searchedProjectDetails.tasks?.length}}</p>
+                }
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div>
+                <h5>Do You Want To Add Employee To The Project ??</h5>
+                <div>
+                    <div class="d-flex">
+                        <p>No &nbsp;</p>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                (change)="handleAddEmployeeToggle()" [(ngModel)]="addEmployeeToggleState">
+                        </div>
+                        <p>Yes &nbsp;</p>
+                    </div>
+                    @if(this.addEmployeeToggleState){
+                    <div>
+                        <select class="form-select" aria-label="Default select example"
+                            [(ngModel)]="selectedEmployeeId">
+                            <option [value]="0" disabled>Select Employee</option>
+                            @for (employee of allEmployees; track employee.employeeId) {
+                            <option [value]="employee.employeeId">{{employee.firstName}} | {{employee.email}}</option>
+                            }
+                        </select>
+                        <div class="mt-2">
+                            <button class="btn btn-sm btn-outline-danger" (click)="handleAddEmployeeToProject()">Add</button>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <app-admin-manage-task [projectId]="this.selectedProjectId" [allTasksList]="this.searchedProjectDetails.tasks" (addTaskEventEmiter)="handleAddTaskEvent($event)"></app-admin-manage-task>
+        </div>
+    </div>
+    }
+
+
+
+
+
+
+</div>
