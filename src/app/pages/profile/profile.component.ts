@@ -15,7 +15,7 @@ import { LoginService } from '../../services/login.service';
 })
 export class ProfileComponent implements OnInit{
   private snackBar = inject(MatSnackBar);
-
+  private employee:EmployeeDto | null = null;
   updateProfileFormGroup: FormGroup;
 
   private initialFormValues = {
@@ -53,8 +53,8 @@ export class ProfileComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    const employee = this.loginService.getLoggedInEmployeeDetails();
-    this.updateProfileFormGroup.setValue({firstName:employee?.firstName,lastName:employee?.lastName,email:employee?.email,city:employee?.address.city,state:employee?.address.state})
+    this.employee = this.loginService.getLoggedInEmployeeDetails();
+    this.updateProfileFormGroup.setValue({firstName:this.employee?.firstName,lastName:this.employee?.lastName,email:this.employee?.email,city:this.employee?.address.city,state:this.employee?.address.state})
   }
 
   handleUpdate() {
@@ -73,7 +73,19 @@ export class ProfileComponent implements OnInit{
       password,
       addressDto
     );
-
+    
+    if(this.employee?.employeeId){
+      this.employeeService.updateEmployeeById(this.employee?.employeeId,employeeDto).subscribe({
+        next:(next)=>{
+          this.snackBar.open('!! Profile Updated Successfully !!','OK');
+          this.loginService.saveEmployeeDetails(next);
+          this.loginService.isLoggedInSubject.next(true);
+        },error:(error)=>{
+          console.log(error);
+        }
+      })
+    }
+    
   }
 
   //This getter method will help you to access specific controls in the template file
