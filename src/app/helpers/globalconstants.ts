@@ -1,5 +1,8 @@
 export const APPLICATION_NAME = 'Kanban-Hub'
 export const APPLICATION_NAME_SHORT = 'KBH'
+export const DEFAULT_PROFILE_PIC_IMAGE_NAME = "default.jpg"
+export const DEFAULT_PROFILE_PIC_IMAGE_LOCATION = "images/default.jpg"
+export const DEFAULT_PROFILE_PIC_IMAGE_FORM_FIELD_NAME = "image"
 
 export const JWT_TOKEN_KEY_FOR_LOCAL_STORAGE = 'token'
 export const JWT_TOKEN_HEADER_KEY = 'Jwt-Token'
@@ -11,7 +14,10 @@ export const LOGIN_URL = `${BACKEND_BASE_URL}/auth/login`
 export const REGISTER_URL = `${BACKEND_BASE_URL}/auth/register`
 
 export const GET_ALL_EMPLOYEE_URL = `${BACKEND_BASE_URL}/employee`
+export const GET_PROFILE_PIC_URL = (employeeId:number) => { return `${BACKEND_BASE_URL}/images/serveProfilePicture/employee/${employeeId}` }
 export const UPDATE_EMPLOYEE_BY_ID_URL = (employeeId:number) => { return `${BACKEND_BASE_URL}/employee/${employeeId}` }
+export const UPDATE_PROFILE_PICTURE_BY_ID_URL = (employeeId:number) => { return `${BACKEND_BASE_URL}/employee/updateProfilePicture/${employeeId}` }
+export const REMOVE_PROFILE_PICTURE_BY_ID_URL = (employeeId:number) => { return `${BACKEND_BASE_URL}/employee/removeProfilePicture/${employeeId}` }
 
 export const GET_ALL_PROJECT_URL = `${BACKEND_BASE_URL}/project`
 export const GET_PROJECT_BY_ID_URL = (projectId:number) => { return `${BACKEND_BASE_URL}/project/${projectId}` }

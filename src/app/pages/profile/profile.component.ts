@@ -1,10 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EmployeeService } from '../../services/employee.service';
 import { AddressDto } from '../../dtos/AddressDto';
 import { EmployeeDto } from '../../dtos/EmployeeDto';
 import { LoginService } from '../../services/login.service';
+import { DEFAULT_PROFILE_PIC_IMAGE_FORM_FIELD_NAME, DEFAULT_PROFILE_PIC_IMAGE_LOCATION, DEFAULT_PROFILE_PIC_IMAGE_NAME, GET_PROFILE_PIC_URL } from '../../helpers/globalconstants';
 
 @Component({
   selector: 'app-profile',
@@ -14,8 +15,13 @@ import { LoginService } from '../../services/login.service';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit{
+  public defaultProfilePicImageName:string = DEFAULT_PROFILE_PIC_IMAGE_NAME
+  public selectedFile: File | null = null;
+  @ViewChild('fileInput')
+  private fileInput: ElementRef<HTMLInputElement> | undefined;
+  public profilePicLocation?:string;
   private snackBar = inject(MatSnackBar);
-  private employee:EmployeeDto | null = null;
+  public employee:EmployeeDto | null | undefined = null;
   updateProfileFormGroup: FormGroup;
 
   private initialFormValues = {
@@ -54,7 +60,20 @@ export class ProfileComponent implements OnInit{
 
   ngOnInit(): void {
     this.employee = this.loginService.getLoggedInEmployeeDetails();
+    if(this.employee){
+      this.profilePicLocation = this.updateProfilePicLocation(this.employee);
+    }
     this.updateProfileFormGroup.setValue({firstName:this.employee?.firstName,lastName:this.employee?.lastName,email:this.employee?.email,city:this.employee?.address.city,state:this.employee?.address.state})
+  }
+
+  private updateProfilePicLocation(employee:EmployeeDto) : string{
+    if(employee?.profilePic===DEFAULT_PROFILE_PIC_IMAGE_NAME){
+      return DEFAULT_PROFILE_PIC_IMAGE_LOCATION
+    }else if(employee?.employeeId){
+      return GET_PROFILE_PIC_URL(employee.employeeId);
+    }else{
+      return ""
+    }
   }
 
   handleUpdate() {
@@ -75,17 +94,71 @@ export class ProfileComponent implements OnInit{
     );
     
     if(this.employee?.employeeId){
-      this.employeeService.updateEmployeeById(this.employee?.employeeId,employeeDto).subscribe({
+      this.employeeService.updateEmployeeById(this.employee.employeeId,employeeDto).subscribe({
         next:(next)=>{
           this.snackBar.open('!! Profile Updated Successfully !!','OK');
-          this.loginService.saveEmployeeDetails(next);
-          this.loginService.isLoggedInSubject.next(true);
+          this.performMandatoryOperationsAfterProfileUpdate(next)
         },error:(error)=>{
           console.log(error);
         }
       })
     }
     
+  }
+
+  handleProfilePictureRemove(){
+    if(this.employee?.employeeId){
+      this.employeeService.removeProfilePictureByEmployeeId(this.employee.employeeId).subscribe({
+        next:(next)=>{
+          this.snackBar.open('!! Profile Picture Successfully Removed !!','OK');
+          if(next.data?.employee){
+            this.performMandatoryOperationsAfterProfileUpdate(next.data?.employee)
+          }
+        },error:(error)=>{
+          console.log(error);
+        }
+      })
+    }
+  }
+
+  handleOnFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
+  }
+
+  handleProfilePictureUpload(){
+    if(this.selectedFile && this.employee?.employeeId){
+      const formData:FormData = new FormData();
+      formData.append(DEFAULT_PROFILE_PIC_IMAGE_FORM_FIELD_NAME,this.selectedFile);
+
+      this.employeeService.updateProfilePictureByEmployeeId(this.employee.employeeId,formData).subscribe({
+        next:(next)=>{
+          this.snackBar.open('!! Profile Picture Successfully Uploaded !!','OK');
+          if(next.data?.employee){
+            this.performMandatoryOperationsAfterProfileUpdate(next.data.employee)
+            this.clearFileInput()
+          } 
+        },error:(error)=>{
+          console.log(error);
+        }
+      })
+    }
+  }
+
+  clearFileInput(){
+    this.selectedFile = null;
+    if(this.fileInput){
+       this.fileInput.nativeElement.value=''
+    }
+  }
+
+  performMandatoryOperationsAfterProfileUpdate(employee:EmployeeDto){
+    this.employee=employee;
+    this.profilePicLocation=this.updateProfilePicLocation(employee)
+    this.loginService.saveEmployeeDetails(employee);
+    this.loginService.isLoggedInSubject.next(true);
   }
 
   //This getter method will help you to access specific controls in the template file

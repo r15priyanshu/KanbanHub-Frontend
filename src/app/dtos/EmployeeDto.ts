@@ -7,6 +7,7 @@ export class EmployeeDto {
     public lastName: string;
     public email: string;
     public password: string;
+    public profilePic?:string;
     public address: AddressDto;
     public role?:RoleDto;
 
