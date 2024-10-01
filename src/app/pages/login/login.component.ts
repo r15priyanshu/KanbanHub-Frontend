@@ -56,6 +56,7 @@ export class LoginComponent {
           this.loginService.saveToken(token);
           this.loginService.saveEmployeeDetails(response.body)
           this.loginService.isLoggedInSubject.next(true)
+          this.loginService.performAutoLogout(this.loginService.getTokenValidityInMilliSeconds())
           this.router.navigate(['/admin/dashboard'])
         }
       },

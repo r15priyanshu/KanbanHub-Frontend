@@ -1,11 +1,11 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { LOGIN_URL, REGISTER_URL } from '../helpers/globalconstants';
+import { CHECK_TOKEN_VALIDITY_URL, LOGIN_URL, REGISTER_URL } from '../helpers/globalconstants';
 import { inject } from '@angular/core';
 import { LoginService } from './login.service';
 
 export const customHttpRequestInterceptor: HttpInterceptorFn = (req, next) => {
   const loginService = inject(LoginService)
-  const urlsNotToBeIntercepted = [LOGIN_URL,REGISTER_URL]
+  const urlsNotToBeIntercepted = [LOGIN_URL,REGISTER_URL,CHECK_TOKEN_VALIDITY_URL]
   if(urlsNotToBeIntercepted.includes(req.url)){
     return next(req)
   }

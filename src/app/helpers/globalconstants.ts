@@ -12,6 +12,7 @@ export const EMPLOYEE_DETAILS_KEY_FOR_LOCAL_STORAGE = 'employee'
 export const BACKEND_BASE_URL = 'http://localhost:8080'
 export const LOGIN_URL = `${BACKEND_BASE_URL}/auth/login`
 export const REGISTER_URL = `${BACKEND_BASE_URL}/auth/register`
+export const CHECK_TOKEN_VALIDITY_URL = `${BACKEND_BASE_URL}/tokenAndRefreshToken/validateToken`
 
 export const GET_ALL_EMPLOYEE_URL = `${BACKEND_BASE_URL}/employee`
 export const GET_PROFILE_PIC_URL = (employeeId:number) => { return `${BACKEND_BASE_URL}/images/serveProfilePicture/employee/${employeeId}` }

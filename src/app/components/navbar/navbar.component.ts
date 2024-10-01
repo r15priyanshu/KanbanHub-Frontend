@@ -17,9 +17,7 @@ export class NavbarComponent implements OnInit{
   public isLoggedIn:boolean=false;
   public employee : EmployeeDto | null = null;
 
-  constructor(private loginService:LoginService,private router:Router){
-    console.log("Inside constructor of NavbarComponent.")
-  }
+  constructor(private loginService:LoginService,private router:Router){}
   ngOnInit(): void {
     console.log("Inside ngOnInit of NavbarComponent.")
     this.loginService.isLoggedInSubject.subscribe((value)=>{
@@ -30,8 +28,6 @@ export class NavbarComponent implements OnInit{
   }
 
   handleLogout(){
-    this.loginService.isLoggedInSubject.next(false)
     this.loginService.performLogout();
-    this.router.navigate(['/login'])
   }
 }
