@@ -22,6 +22,7 @@ export const REMOVE_PROFILE_PICTURE_BY_ID_URL = (employeeId:number) => { return 
 
 export const GET_ALL_PROJECT_URL = `${BACKEND_BASE_URL}/project`
 export const GET_PROJECT_BY_ID_URL = (projectId:number) => { return `${BACKEND_BASE_URL}/project/${projectId}` }
+export const GET_PROJECT_BY_PROJECT_DISPLAY_ID_URL = (projectDisplayId:string) => { return `${BACKEND_BASE_URL}/project/${projectDisplayId}` }
 export const CREATE_PROJECT_URL = `${BACKEND_BASE_URL}/project`
 
 export const ADD_EMPLOYEE_TO_PROJECT_URL = (employeeId:number,projectId:number) => { return `${BACKEND_BASE_URL}/businessoperation/addemployee/${employeeId}/project/${projectId}` }

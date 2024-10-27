@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-4 offset-md-4">
             <div class="input-group mb-3">
-                <input type="text" name="projectId" [value]="this.selectedProjectId===0?'':this.selectedProjectId" (change)="handleSearchChangeEvent($event)" class="form-control"
+                <input type="text" name="projectId" [value]="this.selectedProjectDisplayId" (change)="handleSearchChangeEvent($event)" class="form-control"
                     placeholder="ENTER PROJECT ID HERE" aria-label="Recipient's username"
                     aria-describedby="button-addon2">
                 <button class="btn btn-outline-secondary" type="button" (click)="handleProjectSearch()">Search</button>
@@ -15,7 +15,7 @@
             <div>
                 @if(searchedProjectDetails){
                 <h4>Project Details</h4>
-                <p>Project Id : {{searchedProjectDetails.projectId}}</p>
+                <p>Project Id : {{searchedProjectDetails.projectDisplayId}}</p>
                 <p>Name : {{searchedProjectDetails.projectName}}</p>
                 <p>Description : {{searchedProjectDetails.description}}</p>
                 <p>Start Date : {{searchedProjectDetails.startDate}}</p>

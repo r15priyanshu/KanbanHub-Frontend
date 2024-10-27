@@ -3,6 +3,7 @@ import { TaskDto } from './TaskDto';
 
 export class ProjectDto {
   public projectId?: number;
+  public projectDisplayId?: string;
   public projectName: string;
   public description: string;
   public startDate?: Date;

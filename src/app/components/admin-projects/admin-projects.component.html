@@ -76,9 +76,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (project of projects; track project.projectId) {
+                    @for (project of projects; track project.projectDisplayId) {
                     <tr>
-                        <th scope="row">{{APP_NAME_SHORT}}{{project.projectId}}</th>
+                        <th scope="row">{{project.projectDisplayId}}</th>
                         <td>{{project.projectName}}</td>
                         <td>{{project.startDate | date}}</td>
                         <td>{{ project.statusActive ?"Active":"Complete" }}</td>
@@ -87,7 +87,7 @@
                             <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal"
                                 data-bs-target="#staticBackdropForProjectEdit"
                                 (click)="handleProjectEdit(project.projectId)">Edit Project</button>
-                            <a class="btn btn-sm btn-danger m-1" [routerLink]="['/admin/dashboard/manageproject']" [queryParams]="{projectId:project.projectId}">Open</a>    
+                            <a class="btn btn-sm btn-danger m-1" [routerLink]="['/admin/dashboard/manageproject']" [queryParams]="{projectDisplayId:project.projectDisplayId}">Open</a>    
                         </td>
                     </tr>
                     }

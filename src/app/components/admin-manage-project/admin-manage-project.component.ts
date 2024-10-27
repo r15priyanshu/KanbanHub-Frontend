@@ -20,6 +20,7 @@ import { AdminManageTaskComponent } from '../admin-manage-task/admin-manage-task
 export class AdminManageProjectComponent implements OnInit{
   private snackBar = inject(MatSnackBar);
   selectedProjectId:number = 0;
+  selectedProjectDisplayId:string = "";
   addEmployeeToggleState:boolean = false
   selectedEmployeeId:number = 0;
   allEmployees?:EmployeeDto[];
@@ -33,10 +34,10 @@ export class AdminManageProjectComponent implements OnInit{
     console.log("Inside ngOnInit Of AdminManageProjectComponent.")
     
     this.activatedRoute.queryParamMap.subscribe((next)=>{
-      const projectIdFromQueryParam = next.get('projectId')
+      const projectIdFromQueryParam = next.get('projectDisplayId')
       if(projectIdFromQueryParam){
-        this.selectedProjectId = +projectIdFromQueryParam
-        this.projectService.getProjectById(this.selectedProjectId).subscribe({next:(next)=>{
+        this.selectedProjectDisplayId = projectIdFromQueryParam
+        this.projectService.getProjectByProjectDisplayId(this.selectedProjectDisplayId).subscribe({next:(next)=>{
             this.searchedProjectDetails = next
         },error:(error)=>{
             this.snackBar.open('!! Error Fetching Project Details !! Please Try Again Later !!','OK');
