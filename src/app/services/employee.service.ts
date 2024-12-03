@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EmployeeDto } from '../dtos/EmployeeDto';
-import { GET_ALL_EMPLOYEE_URL, REGISTER_URL, REMOVE_PROFILE_PICTURE_BY_ID_URL, UPDATE_EMPLOYEE_BY_ID_URL, UPDATE_PROFILE_PICTURE_BY_ID_URL } from '../helpers/globalconstants';
+import { GET_ALL_EMPLOYEE_URL, REGISTER_URL, REMOVE_PROFILE_PICTURE_BY_DISPLAY_ID_URL, UPDATE_EMPLOYEE_BY_DISPLAY_ID_URL, UPDATE_PROFILE_PICTURE_BY_DISPLAY_ID_URL } from '../helpers/globalconstants';
 import { firstValueFrom, Observable } from 'rxjs';
 import { ApiResponseDto } from '../dtos/ApiResponseDto';
 
@@ -19,16 +19,16 @@ export class EmployeeService {
     return this.httpClient.get<any>(GET_ALL_EMPLOYEE_URL)
   }
 
-  updateEmployeeById(employeeId:number,employeeDto:EmployeeDto):Observable<EmployeeDto>{
-    return this.httpClient.put<EmployeeDto>(UPDATE_EMPLOYEE_BY_ID_URL(employeeId),employeeDto);
+  updateEmployeeByEmployeeDisplayId(employeeDisplayId:string,employeeDto:EmployeeDto):Observable<EmployeeDto>{
+    return this.httpClient.put<EmployeeDto>(UPDATE_EMPLOYEE_BY_DISPLAY_ID_URL(employeeDisplayId),employeeDto);
   }
 
-  updateProfilePictureByEmployeeId(employeeId:number,formData:FormData):Observable<ApiResponseDto>{
-    return this.httpClient.post<ApiResponseDto>(UPDATE_PROFILE_PICTURE_BY_ID_URL(employeeId),formData);
+  updateProfilePictureByEmployeeDisplayId(employeeDisplayId:string,formData:FormData):Observable<ApiResponseDto>{
+    return this.httpClient.post<ApiResponseDto>(UPDATE_PROFILE_PICTURE_BY_DISPLAY_ID_URL(employeeDisplayId),formData);
   }
 
-  removeProfilePictureByEmployeeId(employeeId:number):Observable<ApiResponseDto>{
-    return this.httpClient.put<ApiResponseDto>(REMOVE_PROFILE_PICTURE_BY_ID_URL(employeeId),null);
+  removeProfilePictureByEmployeeDisplayId(employeeDisplayId:string):Observable<ApiResponseDto>{
+    return this.httpClient.put<ApiResponseDto>(REMOVE_PROFILE_PICTURE_BY_DISPLAY_ID_URL(employeeDisplayId),null);
   }
 
   getAllEmployeesPromise():Promise<EmployeeDto[]>{

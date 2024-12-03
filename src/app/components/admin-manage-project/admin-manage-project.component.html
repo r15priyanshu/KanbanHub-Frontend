@@ -18,7 +18,9 @@
                 <p>Project Id : {{searchedProjectDetails.projectDisplayId}}</p>
                 <p>Name : {{searchedProjectDetails.projectName}}</p>
                 <p>Description : {{searchedProjectDetails.description}}</p>
-                <p>Start Date : {{searchedProjectDetails.startDate}}</p>
+                <p>Status : {{searchedProjectDetails.projectStatus}}</p>
+                <p>Created Date : {{searchedProjectDetails.createdDate | date}}</p>
+                <p>Start Date : {{searchedProjectDetails.startDate | date}}</p>
                 <p>End Date : {{searchedProjectDetails.endDate}}</p>
                 <p>Empoyees Working : {{searchedProjectDetails.employees?.length}}</p>
                 <p>Total Tasks : {{searchedProjectDetails.tasks?.length}}</p>
@@ -27,7 +29,7 @@
         </div>
         <div class="col-md-6">
             <div>
-                <h5>Do You Want To Add Employee To The Project ??</h5>
+                <h5>Add Employee To The Project</h5>
                 <div>
                     <div class="d-flex">
                         <p>No &nbsp;</p>
@@ -42,8 +44,8 @@
                         <select class="form-select" aria-label="Default select example"
                             [(ngModel)]="selectedEmployeeId">
                             <option [value]="0" disabled>Select Employee</option>
-                            @for (employee of allEmployees; track employee.employeeId) {
-                            <option [value]="employee.employeeId">{{employee.firstName}} | {{employee.email}}</option>
+                            @for (employee of allEmployees; track employee.employeeDisplayId) {
+                            <option [value]="employee.employeeDisplayId">{{employee.firstName}} | {{employee.email}}</option>
                             }
                         </select>
                         <div class="mt-2">
@@ -57,7 +59,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <app-admin-manage-task [projectId]="this.selectedProjectId" [allTasksList]="this.searchedProjectDetails.tasks" (addTaskEventEmiter)="handleAddTaskEvent($event)"></app-admin-manage-task>
+            <app-admin-manage-task [projectDisplayId]="this.selectedProjectDisplayId" [allTasksList]="this.searchedProjectDetails.tasks" (addTaskEventEmiter)="handleAddTaskEvent($event)"></app-admin-manage-task>
         </div>
     </div>
     }

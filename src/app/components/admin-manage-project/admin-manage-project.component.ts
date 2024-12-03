@@ -19,7 +19,6 @@ import { AdminManageTaskComponent } from '../admin-manage-task/admin-manage-task
 })
 export class AdminManageProjectComponent implements OnInit{
   private snackBar = inject(MatSnackBar);
-  selectedProjectId:number = 0;
   selectedProjectDisplayId:string = "";
   addEmployeeToggleState:boolean = false
   selectedEmployeeId:number = 0;
@@ -47,11 +46,12 @@ export class AdminManageProjectComponent implements OnInit{
   }
 
   async handleProjectSearch(){
-    if(!this.selectedProjectId){
+    console.log(this.selectedProjectDisplayId)
+    if(!this.selectedProjectDisplayId){
       this.snackBar.open('!! Validation Failed !! Please Check Your Inputs !!','OK');
     }else{
       try{
-        const data = await this.projectService.getProjectByIdPromise(this.selectedProjectId)
+        const data = await this.projectService.getProjectByProjectDisplayIdPromise(this.selectedProjectDisplayId)
         this.searchedProjectDetails=data
       }catch(error){
         console.log(error)
@@ -74,7 +74,7 @@ export class AdminManageProjectComponent implements OnInit{
     if(this.selectedEmployeeId===0){
       this.snackBar.open('!! No Employee Seleted !! Please Check !!','OK');
     }else{
-        this.businessOperationsService.addEmployeeToProject(this.selectedEmployeeId,this.selectedProjectId).subscribe({next:(next)=>{
+        this.businessOperationsService.addEmployeeToProjectByDisplayId(this.selectedEmployeeId,this.selectedProjectDisplayId).subscribe({next:(next)=>{
           this.snackBar.open('!! Employee Successfully Added To The Project !!','OK');
           this.searchedProjectDetails = next;                            
       },error:(error)=>{
@@ -86,7 +86,7 @@ export class AdminManageProjectComponent implements OnInit{
 
   handleAddTaskEvent(isTaskAdded:boolean){
     if(isTaskAdded){
-        this.projectService.getProjectById(this.selectedProjectId).subscribe({next:(next)=>{
+        this.projectService.getProjectByProjectDisplayId(this.selectedProjectDisplayId).subscribe({next:(next)=>{
         this.searchedProjectDetails = next
     },error:(error)=>{
         this.snackBar.open('!! Error Fetching Project Details !! Please Try Again Later !!','OK');
@@ -96,7 +96,7 @@ export class AdminManageProjectComponent implements OnInit{
 
   handleSearchChangeEvent(event:any){
     if(event.target.value!==0){
-      this.selectedProjectId = event.target.value;
+      this.selectedProjectDisplayId = event.target.value;
     }
   }
 }

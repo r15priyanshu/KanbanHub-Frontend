@@ -48,7 +48,11 @@ export class AdminProjectsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.projectService.getAllProjects().subscribe({
+    this.fetchAllProjects();
+  }
+
+  fetchAllProjects(){
+    this.projectService.getAllProjects(true).subscribe({
       next: (next) => {
         this.projects = [...next];
       },
@@ -77,6 +81,7 @@ export class AdminProjectsComponent implements OnInit {
       next:(next)=>{
         this.snackBar.open('!! Project Successfully Added !!','OK');
         this.handleReset()
+        this.fetchAllProjects();
       },error:(error)=>{
         this.snackBar.open('!! Something Went Wrong While Adding New Project !!','OK');
       }

@@ -3,6 +3,7 @@ import { RoleDto } from "./RoleDto";
 
 export class EmployeeDto {
     public employeeId?: number;
+    public employeeDisplayId?: string;
     public firstName: string;
     public lastName: string;
     public email: string;

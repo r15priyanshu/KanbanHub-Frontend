@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="mb-3 d-flex">
-                <button class="btn btn-danger ms-auto" type="button" data-bs-toggle="collapse"
+                <button class="btn btn-danger btn-sm ms-auto" type="button" data-bs-toggle="collapse"
                     data-bs-target="#addProjectCollapse" aria-expanded="false" aria-controls="collapseExample">
                     + Create Project
                 </button>
@@ -69,6 +69,7 @@
                     <tr>
                         <th scope="col">Project Id</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Created Date</th>
                         <th scope="col">Start Date</th>
                         <th scope="col">Status</th>
                         <th scope="col">End Date</th>
@@ -80,39 +81,17 @@
                     <tr>
                         <th scope="row">{{project.projectDisplayId}}</th>
                         <td>{{project.projectName}}</td>
+                        <td>{{project.createdDate | date}}</td>
                         <td>{{project.startDate | date}}</td>
-                        <td>{{ project.statusActive ?"Active":"Complete" }}</td>
+                        <td>{{project.projectStatus }}</td>
                         <td>{{project.endDate}}</td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdropForProjectEdit"
-                                (click)="handleProjectEdit(project.projectId)">Edit Project</button>
-                            <a class="btn btn-sm btn-danger m-1" [routerLink]="['/admin/dashboard/manageproject']" [queryParams]="{projectDisplayId:project.projectDisplayId}">Open</a>    
+                            <a class="btn btn-sm btn-danger m-1" [routerLink]="['/admin/dashboard/manageproject']" [queryParams]="{projectDisplayId:project.projectDisplayId}">Manage</a>    
                         </td>
                     </tr>
                     }
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <!-- Edit Project Modal -->
-    <div class="modal fade" id="staticBackdropForProjectEdit" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="staticBackdropForProjectEditLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content  rounded-0">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropForProjectEditLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-primary">Understood</button>
-                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
         </div>
     </div>
 </div>

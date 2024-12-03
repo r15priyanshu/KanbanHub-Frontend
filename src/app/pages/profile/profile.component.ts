@@ -69,8 +69,8 @@ export class ProfileComponent implements OnInit{
   private updateProfilePicLocation(employee:EmployeeDto) : string{
     if(employee?.profilePic===DEFAULT_PROFILE_PIC_IMAGE_NAME){
       return DEFAULT_PROFILE_PIC_IMAGE_LOCATION
-    }else if(employee?.employeeId){
-      return GET_PROFILE_PIC_URL(employee.employeeId);
+    }else if(employee?.employeeDisplayId){
+      return GET_PROFILE_PIC_URL(employee.employeeDisplayId);
     }else{
       return ""
     }
@@ -93,8 +93,8 @@ export class ProfileComponent implements OnInit{
       addressDto
     );
     
-    if(this.employee?.employeeId){
-      this.employeeService.updateEmployeeById(this.employee.employeeId,employeeDto).subscribe({
+    if(this.employee?.employeeDisplayId){
+      this.employeeService.updateEmployeeByEmployeeDisplayId(this.employee.employeeDisplayId,employeeDto).subscribe({
         next:(next)=>{
           this.snackBar.open('!! Profile Updated Successfully !!','OK');
           this.performMandatoryOperationsAfterProfileUpdate(next)
@@ -107,8 +107,8 @@ export class ProfileComponent implements OnInit{
   }
 
   handleProfilePictureRemove(){
-    if(this.employee?.employeeId){
-      this.employeeService.removeProfilePictureByEmployeeId(this.employee.employeeId).subscribe({
+    if(this.employee?.employeeDisplayId){
+      this.employeeService.removeProfilePictureByEmployeeDisplayId(this.employee.employeeDisplayId).subscribe({
         next:(next)=>{
           this.snackBar.open('!! Profile Picture Successfully Removed !!','OK');
           if(next.data?.employee){
@@ -129,11 +129,11 @@ export class ProfileComponent implements OnInit{
   }
 
   handleProfilePictureUpload(){
-    if(this.selectedFile && this.employee?.employeeId){
+    if(this.selectedFile && this.employee?.employeeDisplayId){
       const formData:FormData = new FormData();
       formData.append(DEFAULT_PROFILE_PIC_IMAGE_FORM_FIELD_NAME,this.selectedFile);
 
-      this.employeeService.updateProfilePictureByEmployeeId(this.employee.employeeId,formData).subscribe({
+      this.employeeService.updateProfilePictureByEmployeeDisplayId(this.employee.employeeDisplayId,formData).subscribe({
         next:(next)=>{
           this.snackBar.open('!! Profile Picture Successfully Uploaded !!','OK');
           if(next.data?.employee){

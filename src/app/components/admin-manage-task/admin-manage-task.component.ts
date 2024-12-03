@@ -22,7 +22,7 @@ export class AdminManageTaskComponent {
   private snackBar = inject(MatSnackBar);
 
   @Input({required:true}) 
-  projectId:number=0;
+  projectDisplayId:string="";
 
   @Input({required:true})
   allTasksList?:TaskDto[];
@@ -74,7 +74,7 @@ export class AdminManageTaskComponent {
     }
     const { taskName, taskDescription , dueDate} = this.taskFormGroup.value;
     const taskDto = new TaskDto(taskName,taskDescription,dueDate);
-    this.businessOperationsService.addTaskToProject(taskDto,this.projectId).subscribe({
+    this.businessOperationsService.addTaskToProjectByProjectDisplayId(taskDto,this.projectDisplayId).subscribe({
       next:(next)=>{
         this.snackBar.open('!! Task Successfully Added !!','OK');
         this.addTaskEventEmiter.emit(true);

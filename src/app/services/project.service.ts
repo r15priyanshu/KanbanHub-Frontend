@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ProjectDto } from '../dtos/ProjectDto';
 import { firstValueFrom, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {
   GET_ALL_PROJECT_URL,
   GET_PROJECT_BY_ID_URL,
@@ -14,8 +14,9 @@ import {
 export class ProjectService {
   constructor(private httpClient: HttpClient) {}
 
-  getAllProjects(): Observable<ProjectDto[]> {
-    return this.httpClient.get<ProjectDto[]>(GET_ALL_PROJECT_URL);
+  getAllProjects(fetchPartial: boolean): Observable<ProjectDto[]> {
+    const params = new HttpParams().set('fetchPartial', fetchPartial);
+    return this.httpClient.get<ProjectDto[]>(GET_ALL_PROJECT_URL,{params});
   }
 
   getProjectById(projectId: number): Observable<ProjectDto> {
@@ -29,6 +30,10 @@ export class ProjectService {
 
   getProjectByIdPromise(projectId: number) : Promise<ProjectDto> {
     return firstValueFrom(this.getProjectById(projectId));
+  }
+
+  getProjectByProjectDisplayIdPromise(projectDisplayId: string) : Promise<ProjectDto> {
+    return firstValueFrom(this.getProjectByProjectDisplayId(projectDisplayId));
   }
 
   createProject(projectDto: ProjectDto) {
