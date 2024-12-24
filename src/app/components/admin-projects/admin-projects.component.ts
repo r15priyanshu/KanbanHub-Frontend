@@ -11,7 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { APPLICATION_NAME_SHORT } from '../../helpers/globalconstants';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin-projects',
@@ -32,6 +32,7 @@ export class AdminProjectsComponent implements OnInit {
   };
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private projectService: ProjectService,
     private formBuilder: FormBuilder
   ) {
@@ -48,7 +49,7 @@ export class AdminProjectsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchAllProjects();
+    this.projects = this.activatedRoute.snapshot.data['allProjects'];
   }
 
   fetchAllProjects(){
