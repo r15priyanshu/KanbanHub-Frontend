@@ -3,7 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginService } from '../../services/login.service';
 import { LoginRequestDto } from '../../dtos/LoginRequestDto';
-import { ERR_EMOJI, JWT_TOKEN_HEADER_KEY, SUCCESS_EMOJI, WARN_EMOJI } from '../../helpers/globalconstants';
+import { ERR_EMOJI, JWT_REFRESH_TOKEN_HEADER_KEY, JWT_TOKEN_HEADER_KEY, SUCCESS_EMOJI, WARN_EMOJI } from '../../helpers/globalconstants';
 import { Router } from '@angular/router';
 
 @Component({
@@ -51,9 +51,11 @@ export class LoginComponent {
     this.loginService.performLogin(loginRequestDto).subscribe({
       next: (response) => {
         const token = response.headers.get(JWT_TOKEN_HEADER_KEY)
-        if(token){
+        const refreshToken = response.headers.get(JWT_REFRESH_TOKEN_HEADER_KEY)
+        if(token && refreshToken){
           this.snackBar.open('!! Successfully Logged In !!',SUCCESS_EMOJI);
           this.loginService.saveToken(token);
+          this.loginService.saveRefreshToken(refreshToken);
           this.loginService.saveEmployeeDetails(response.body)
           this.loginService.isLoggedInSubject.next(true)
           this.loginService.performAutoLogout(this.loginService.getTokenValidityInMilliSeconds())

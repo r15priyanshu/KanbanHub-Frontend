@@ -4,8 +4,9 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { jwtDecode } from "jwt-decode";
 import {
   BACKEND_BASE_URL,
-  CHECK_TOKEN_VALIDITY_URL,
+  PERFORM_TOKEN_REFRESH_URL,
   EMPLOYEE_DETAILS_KEY_FOR_LOCAL_STORAGE,
+  JWT_REFRESH_TOKEN_KEY_FOR_LOCAL_STORAGE,
   JWT_TOKEN_KEY_FOR_LOCAL_STORAGE,
   LOGIN_URL,
 } from '../helpers/globalconstants';
@@ -13,6 +14,7 @@ import { EmployeeDto } from '../dtos/EmployeeDto';
 import { LoginRequestDto } from '../dtos/LoginRequestDto';
 import { Router } from '@angular/router';
 import { TokenDto } from '../dtos/TokenDto';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +24,7 @@ export class LoginService {
   public isLoggedInSubject = new BehaviorSubject<boolean>(this.isEmployeeLoggedIn());
   public tokenExpirationSetTimout : any = undefined;
 
-  constructor(private httpClient: HttpClient,private router:Router) {}
+  constructor(private httpClient: HttpClient,private router:Router,private tokenService:TokenService) {}
 
   public performLogin(loginRequestDto:LoginRequestDto): Observable<HttpResponse<any>> {
     return this.httpClient.post<HttpResponse<any>>(
@@ -40,15 +42,25 @@ export class LoginService {
     return localStorage.getItem(JWT_TOKEN_KEY_FOR_LOCAL_STORAGE);
   }
 
+  public saveRefreshToken(refreshToken: string): boolean {
+    localStorage.setItem(JWT_REFRESH_TOKEN_KEY_FOR_LOCAL_STORAGE, refreshToken);
+    return true;
+  }
+
+  public getRefreshToken(): string | null {
+    return localStorage.getItem(JWT_REFRESH_TOKEN_KEY_FOR_LOCAL_STORAGE);
+  }
+
   public isEmployeeLoggedIn(): boolean {
     const token = this.getToken();
     const employee = this.getLoggedInEmployeeDetails();
     return token && employee ? true : false;
   }
 
-  public performLogout(): boolean {
+  public performLogout(isManualLogout:boolean): boolean {
     localStorage.removeItem(JWT_TOKEN_KEY_FOR_LOCAL_STORAGE);
-    localStorage.removeItem(EMPLOYEE_DETAILS_KEY_FOR_LOCAL_STORAGE)
+    localStorage.removeItem(JWT_REFRESH_TOKEN_KEY_FOR_LOCAL_STORAGE);
+    localStorage.removeItem(EMPLOYEE_DETAILS_KEY_FOR_LOCAL_STORAGE);
 
     // Clearing the autoLogoutTimer
     if(this.tokenExpirationSetTimout!=undefined){
@@ -58,12 +70,25 @@ export class LoginService {
     this.tokenExpirationSetTimout = undefined
     this.isLoggedInSubject.next(false)
     this.router.navigate(['/login'])
+    
+    if(isManualLogout){
+      console.log("Manual Logout Successful !!")
+    }else{
+      console.log("Auto Logout Successful !!")
+    }
     return true;
   }
 
   public performAutoLogout(expirationTimeInMilliSeconds:number):boolean{
+    console.log("Performing Auto Logout After : ",expirationTimeInMilliSeconds," ms.")
     this.tokenExpirationSetTimout = setTimeout(()=>{
-      this.performLogout()
+      const userResponse = confirm("Session Expired , Do You Want To Extend Current Session ?");
+      if(userResponse){
+        console.log("Trying To Extend Session Using Refresh Token !!")
+        this.performTokenRefresh();
+      }else{
+        this.performLogout(false)
+      }
     },expirationTimeInMilliSeconds)
     return true;
   }
@@ -104,7 +129,7 @@ export class LoginService {
   }
 
   public getTokenValidityInMilliSeconds():number{
-    console.log('Trying To Decode Token For Extracting Token Validity !!')
+    console.log('Fetching Token From Local Storage And Trying To Decode Token For Extracting Token Validity !!')
     const encodedToken=this.getToken()
     let decodedToken=null
     if(encodedToken){
@@ -121,13 +146,38 @@ export class LoginService {
         return 0;
       }
     }else{
+      console.log("Token Not Found In Local Storage !!")
       return 0;
     }
   }
 
-  checkTokenValidity(token:string):Observable<boolean>{
+  public isTokenValid():{isTokenValid:boolean,tokenValidForMilliSeconds:number}{
+    const tokenValidForMilliSeconds:number = this.getTokenValidityInMilliSeconds();
+    return tokenValidForMilliSeconds > 0 ? {isTokenValid:true,tokenValidForMilliSeconds:tokenValidForMilliSeconds} : {isTokenValid:false,tokenValidForMilliSeconds:tokenValidForMilliSeconds}
+  }
+
+  public performTokenRefresh(){
+    const employee = this.getLoggedInEmployeeDetails();
+    const refreshToken = this.getRefreshToken();
+
+    //Creating Post Api Call Body
     const tokenDto = new TokenDto()
-    tokenDto.token = token
-    return this.httpClient.post<boolean>(CHECK_TOKEN_VALIDITY_URL,tokenDto);
+    tokenDto.refreshToken = refreshToken
+
+    if(employee?.employeeDisplayId && refreshToken){
+      this.tokenService.performTokenRefreshByEmployeeDisplayId(employee.employeeDisplayId,tokenDto).subscribe({next:(next)=>{
+        console.log("Token Successfully Refreshed !! ")
+        const {token:newToken} = next
+        if(newToken){
+          //Once New Token Is Obtained , Save It in Local Storage.
+          this.saveToken(newToken)
+          //Now Again, Set Up Auto Logout !!
+          this.performAutoLogout(this.getTokenValidityInMilliSeconds())
+        }
+      },error:(error)=>{
+        console.log("Error In Refreshing Token !!")
+        this.performLogout(true)
+      }})
+    }
   }
 }

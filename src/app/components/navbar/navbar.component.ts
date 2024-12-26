@@ -28,6 +28,6 @@ export class NavbarComponent implements OnInit{
   }
 
   handleLogout(){
-    this.loginService.performLogout();
+    this.loginService.performLogout(true);
   }
 }

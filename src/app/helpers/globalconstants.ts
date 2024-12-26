@@ -5,14 +5,16 @@ export const DEFAULT_PROFILE_PIC_IMAGE_LOCATION = "images/default.jpg"
 export const DEFAULT_PROFILE_PIC_IMAGE_FORM_FIELD_NAME = "image"
 
 export const JWT_TOKEN_KEY_FOR_LOCAL_STORAGE = 'token'
+export const JWT_REFRESH_TOKEN_KEY_FOR_LOCAL_STORAGE = 'refreshToken'
 export const JWT_TOKEN_HEADER_KEY = 'Jwt-Token'
+export const JWT_REFRESH_TOKEN_HEADER_KEY = 'Jwt-Refresh-Token'
 export const EMPLOYEE_DETAILS_KEY_FOR_LOCAL_STORAGE = 'employee'
 
 //BACKEND API URL DETAILS
 export const BACKEND_BASE_URL = 'http://localhost:8080'
 export const LOGIN_URL = `${BACKEND_BASE_URL}/auth/login`
 export const REGISTER_URL = `${BACKEND_BASE_URL}/auth/register`
-export const CHECK_TOKEN_VALIDITY_URL = `${BACKEND_BASE_URL}/tokenAndRefreshToken/validateToken`
+export const PERFORM_TOKEN_REFRESH_URL = (employeeDisplayId:string) => { return `${BACKEND_BASE_URL}/public/tokenAndRefreshToken/refreshToken/employee/${employeeDisplayId}` }
 
 export const GET_ALL_EMPLOYEE_URL = `${BACKEND_BASE_URL}/employee`
 export const GET_PROFILE_PIC_URL = (employeeDisplayId:string) => { return `${BACKEND_BASE_URL}/images/serveProfilePicture/employee/${employeeDisplayId}` }
