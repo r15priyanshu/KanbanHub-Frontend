@@ -1,10 +1,8 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { jwtDecode } from "jwt-decode";
 import {
-  BACKEND_BASE_URL,
-  PERFORM_TOKEN_REFRESH_URL,
   EMPLOYEE_DETAILS_KEY_FOR_LOCAL_STORAGE,
   JWT_REFRESH_TOKEN_KEY_FOR_LOCAL_STORAGE,
   JWT_TOKEN_KEY_FOR_LOCAL_STORAGE,
@@ -16,6 +14,9 @@ import { Router } from '@angular/router';
 import { TokenDto } from '../dtos/TokenDto';
 import { TokenService } from './token.service';
 
+import { PERFORM_SESSION_EXTENSION } from '../helpers/custom-confirm-dialog-data';
+import { CommonComponentService } from './common-component.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -24,7 +25,12 @@ export class LoginService {
   public isLoggedInSubject = new BehaviorSubject<boolean>(this.isEmployeeLoggedIn());
   public tokenExpirationSetTimout : any = undefined;
 
-  constructor(private httpClient: HttpClient,private router:Router,private tokenService:TokenService) {}
+  constructor(
+    private httpClient: HttpClient,
+    private router:Router,
+    private tokenService:TokenService,
+    private commonComponentService:CommonComponentService
+  ) {}
 
   public performLogin(loginRequestDto:LoginRequestDto): Observable<HttpResponse<any>> {
     return this.httpClient.post<HttpResponse<any>>(
@@ -81,15 +87,24 @@ export class LoginService {
 
   public performAutoLogout(expirationTimeInMilliSeconds:number):boolean{
     console.log("Performing Auto Logout After : ",expirationTimeInMilliSeconds," ms.")
+
     this.tokenExpirationSetTimout = setTimeout(()=>{
-      const userResponse = confirm("Session Expired , Do You Want To Extend Current Session ?");
-      if(userResponse){
+
+      const matDialogRef = this.commonComponentService.openConfirmDialog(PERFORM_SESSION_EXTENSION)
+      matDialogRef.afterClosed().subscribe((result)=>{
+
+      console.log(PERFORM_SESSION_EXTENSION.text,result)
+      if(result){
         console.log("Trying To Extend Session Using Refresh Token !!")
         this.performTokenRefresh();
       }else{
         this.performLogout(false)
       }
-    },expirationTimeInMilliSeconds)
+
+    });
+
+    },expirationTimeInMilliSeconds);
+
     return true;
   }
 

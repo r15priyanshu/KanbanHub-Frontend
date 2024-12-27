@@ -1,9 +1,11 @@
 import { UpperCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { APPLICATION_NAME } from '../../helpers/globalconstants';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { EmployeeDto } from '../../dtos/EmployeeDto';
+import { PERFORM_MANUAL_LOGOUT } from '../../helpers/custom-confirm-dialog-data';
+import { CommonComponentService } from '../../services/common-component.service';
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +19,11 @@ export class NavbarComponent implements OnInit{
   public isLoggedIn:boolean=false;
   public employee : EmployeeDto | null = null;
 
-  constructor(private loginService:LoginService,private router:Router){}
+  constructor(
+    private loginService:LoginService,
+    private commonComponentService:CommonComponentService
+  ){}
+
   ngOnInit(): void {
     console.log("Inside ngOnInit of NavbarComponent.")
     this.loginService.isLoggedInSubject.subscribe((value)=>{
@@ -28,6 +34,12 @@ export class NavbarComponent implements OnInit{
   }
 
   handleLogout(){
-    this.loginService.performLogout(true);
+    const matDialogRef = this.commonComponentService.openConfirmDialog(PERFORM_MANUAL_LOGOUT);
+    matDialogRef.afterClosed().subscribe((result)=>{
+      console.log(PERFORM_MANUAL_LOGOUT.text,result)
+      if(result){
+        this.loginService.performLogout(true);
+      }
+    })
   }
 }
