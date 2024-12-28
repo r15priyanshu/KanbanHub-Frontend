@@ -1,0 +1,5 @@
+Adding eslint for Angular and Using It.
+>> ng add @angular-eslint/schematics
+>> ng lint
+
+=====================================================================
