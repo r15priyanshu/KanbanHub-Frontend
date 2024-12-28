@@ -79,11 +79,11 @@ export class AdminProjectsComponent implements OnInit {
     const {projectName,description}=this.projectFormGroup.value;
     const projectDto=new ProjectDto(projectName,description);
     this.projectService.createProject(projectDto).subscribe({
-      next:(next)=>{
+      next:(_next)=>{
         this.snackBar.open('!! Project Successfully Added !!','OK');
         this.handleReset()
         this.fetchAllProjects();
-      },error:(error)=>{
+      },error:(_error)=>{
         this.snackBar.open('!! Something Went Wrong While Adding New Project !!','OK');
       }
     })

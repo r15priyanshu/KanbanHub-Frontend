@@ -1,5 +1,5 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { PERFORM_TOKEN_REFRESH_URL, LOGIN_URL, REGISTER_URL } from '../helpers/globalconstants';
+import { LOGIN_URL, REGISTER_URL } from '../helpers/globalconstants';
 import { inject } from '@angular/core';
 import { LoginService } from './login.service';
 

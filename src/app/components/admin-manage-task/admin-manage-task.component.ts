@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -18,7 +18,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './admin-manage-task.component.html',
   styleUrl: './admin-manage-task.component.css',
 })
-export class AdminManageTaskComponent {
+export class AdminManageTaskComponent implements OnInit{
   private snackBar = inject(MatSnackBar);
 
   @Input({required:true}) 
@@ -28,7 +28,7 @@ export class AdminManageTaskComponent {
   allTasksList?:TaskDto[];
 
   @Output() 
-  addTaskEventEmiter:EventEmitter<boolean>=new EventEmitter();
+  addTaskEventEmiter:EventEmitter<boolean>=new EventEmitter<boolean>();
 
 
   taskFormGroup: FormGroup;
@@ -75,7 +75,7 @@ export class AdminManageTaskComponent {
     const { taskName, taskDescription , dueDate} = this.taskFormGroup.value;
     const taskDto = new TaskDto(taskName,taskDescription,dueDate);
     this.businessOperationsService.addTaskToProjectByProjectDisplayId(taskDto,this.projectDisplayId).subscribe({
-      next:(next)=>{
+      next:(_next)=>{
         this.snackBar.open('!! Task Successfully Added !!','OK');
         this.addTaskEventEmiter.emit(true);
         this.handleReset()

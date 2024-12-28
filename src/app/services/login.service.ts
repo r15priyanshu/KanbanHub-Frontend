@@ -130,11 +130,11 @@ export class LoginService {
     const encodedToken=this.getToken()
     let decodedToken=null
     if(encodedToken){
-      try{
+      try {
         decodedToken=jwtDecode<any>(encodedToken);
         console.log('Token Decoded and Role Extracted !! Role =',decodedToken.role)
         return decodedToken.role
-      }catch(error){
+      } catch {
         console.log('Error While Decoding Token For Extracting Role !!')
         return null;
       }
@@ -156,7 +156,7 @@ export class LoginService {
         const tokenValidity = expDate.getTime() - Date.now() 
         console.log('Token Decoded and Token Expires At :',expDate," and Token Valid For :",tokenValidity,"ms.")
         return tokenValidity
-      }catch(error){
+      } catch {
         console.log('Error While Decoding Token Extracting Token Validity !!')
         return 0;
       }
@@ -189,7 +189,7 @@ export class LoginService {
           //Now Again, Set Up Auto Logout !!
           this.performAutoLogout(this.getTokenValidityInMilliSeconds())
         }
-      },error:(error)=>{
+      },error:(_error)=>{
         console.log("Error In Refreshing Token !!")
         this.performLogout(true)
       }})

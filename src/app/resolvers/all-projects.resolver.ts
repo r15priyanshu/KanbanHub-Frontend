@@ -13,7 +13,7 @@ export const allProjectsResolver: ResolveFn<ProjectDto[]> = (route, state) => {
   console.info('Executing AllProjects Route Resolver For : ', state.url);
 
   return projectService.getAllProjects(fetchAllProjectsPartial).pipe(
-    catchError((error) => {
+    catchError((_error) => {
       console.error('Error While Fetching AllProjects Data !!');
       // Handle the error, e.g., navigate to an error page or return an empty array
       // Return an empty observable to allow navigation

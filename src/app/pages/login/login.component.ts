@@ -70,8 +70,7 @@ export class LoginComponent {
         }else{
             this.snackBar.open('!! Something Went Wrong While Login !! Please Try After Some Time !!',ERR_EMOJI);
         }  
-      },
-      complete: () => {},
+      }
     });
   }
 

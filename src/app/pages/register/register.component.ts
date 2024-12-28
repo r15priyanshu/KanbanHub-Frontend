@@ -90,12 +90,12 @@ export class RegisterComponent {
     );
 
     this.employeeService.registerEmployee(employeeDto).subscribe({
-      next: (data) => {
+      next: (_data) => {
         //console.log(data);
         this.snackBar.open('!! Thanks For Registering !! You Can Now Login !!','OK');
         this.handleReset();
       },
-      error: (error) => {
+      error: (_error) => {
         //console.log('Error');
       },
       complete: () => {console.log('Registration Event Completion !!')},

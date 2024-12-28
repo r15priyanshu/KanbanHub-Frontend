@@ -39,7 +39,7 @@ export class AdminManageProjectComponent implements OnInit{
         this.selectedProjectDisplayId = projectDisplayIdFromQueryParam
         this.projectService.getProjectByProjectDisplayId(this.selectedProjectDisplayId).subscribe({next:(next)=>{
             this.searchedProjectDetails = next
-        },error:(error)=>{
+        },error:(_error)=>{
             this.snackBar.open('!! Error Fetching Project Details !! Please Try Again Later !!','OK');
         }})
       }
@@ -111,7 +111,7 @@ export class AdminManageProjectComponent implements OnInit{
     if(isTaskAdded){
         this.projectService.getProjectByProjectDisplayId(this.selectedProjectDisplayId).subscribe({next:(next)=>{
         this.searchedProjectDetails = next
-    },error:(error)=>{
+    },error:(_error)=>{
         this.snackBar.open('!! Error Fetching Project Details !! Please Try Again Later !!','OK');
     }})
     }
