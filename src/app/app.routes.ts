@@ -3,12 +3,12 @@ import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
-import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-dashboard.component';
 import { adminGuard } from './guards/admin.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { AdminProjectsComponent } from './components/admin-projects/admin-projects.component';
 import { AdminManageProjectComponent } from './components/admin-manage-project/admin-manage-project.component';
 import { allProjectsResolver } from './resolvers/all-projects.resolver';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,7 +16,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'admin/dashboard',component:AdminDashboardComponent,canActivate: [adminGuard],
+  { path: 'admin/dashboard',component:DashboardComponent,canActivate: [adminGuard],
     children: [
       { path: 'projects',component: AdminProjectsComponent, data : {fetchAllProjectsPartial:true}, resolve : {allProjects :allProjectsResolver }},
       { path: 'manageproject',component: AdminManageProjectComponent}

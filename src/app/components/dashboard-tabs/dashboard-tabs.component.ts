@@ -5,9 +5,9 @@ import { RouterModule } from '@angular/router';
   selector: 'app-admin-tabs',
   standalone: true,
   imports: [RouterModule],
-  templateUrl: './admin-tabs.component.html',
-  styleUrl: './admin-tabs.component.css'
+  templateUrl: './dashboard-tabs.component.html',
+  styleUrl: './dashboard-tabs.component.css'
 })
-export class AdminTabsComponent {
+export class DashboardTabsComponent {
 
 }
