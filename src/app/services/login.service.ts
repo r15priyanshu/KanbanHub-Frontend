@@ -15,7 +15,7 @@ import { TokenDto } from '../dtos/TokenDto';
 import { TokenService } from './token.service';
 
 import { PERFORM_SESSION_EXTENSION } from '../helpers/custom-confirm-dialog-data';
-import { CommonComponentService } from './common-component.service';
+import { UtilityComponentService } from './utility-component.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +29,7 @@ export class LoginService {
     private httpClient: HttpClient,
     private router:Router,
     private tokenService:TokenService,
-    private commonComponentService:CommonComponentService
+    private utilityComponentService:UtilityComponentService
   ) {}
 
   public performLogin(loginRequestDto:LoginRequestDto): Observable<HttpResponse<any>> {
@@ -90,7 +90,7 @@ export class LoginService {
 
     this.tokenExpirationSetTimout = setTimeout(()=>{
 
-      const matDialogRef = this.commonComponentService.openConfirmDialog(PERFORM_SESSION_EXTENSION)
+      const matDialogRef = this.utilityComponentService.openConfirmDialog(PERFORM_SESSION_EXTENSION)
       matDialogRef.afterClosed().subscribe((result)=>{
 
       console.log(PERFORM_SESSION_EXTENSION.text,result)

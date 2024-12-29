@@ -5,7 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { EmployeeDto } from '../../dtos/EmployeeDto';
 import { PERFORM_MANUAL_LOGOUT } from '../../helpers/custom-confirm-dialog-data';
-import { CommonComponentService } from '../../services/common-component.service';
+import { UtilityComponentService } from '../../services/utility-component.service';
 
 @Component({
   selector: 'app-navbar',
@@ -21,7 +21,7 @@ export class NavbarComponent implements OnInit{
 
   constructor(
     private loginService:LoginService,
-    private commonComponentService:CommonComponentService,
+    private utilityComponentService:UtilityComponentService,
     private router:Router
   ){}
 
@@ -39,7 +39,7 @@ export class NavbarComponent implements OnInit{
   }
 
   handleLogout(){
-    const matDialogRef = this.commonComponentService.openConfirmDialog(PERFORM_MANUAL_LOGOUT);
+    const matDialogRef = this.utilityComponentService.openConfirmDialog(PERFORM_MANUAL_LOGOUT);
     matDialogRef.afterClosed().subscribe((result)=>{
       console.log(PERFORM_MANUAL_LOGOUT.text,result)
       if(result){

@@ -6,15 +6,15 @@ export interface CustomConfirmDialogData{
 }
 
 export const PERFORM_MANUAL_LOGOUT:CustomConfirmDialogData = {
-    title:'Logging Out ?',
-    text:"Are you sure you wan't to Logout ? ",
+    title:'',
+    text:"Are you sure you wan't to LogOut ?",
     confirmTrueText:"Yes",
     confirmFalseText:"No"
 }
 
 export const PERFORM_SESSION_EXTENSION:CustomConfirmDialogData = {
-    title:'Session Expired !!',
-    text:"Session has expired , Do you want to extend current session ?",
+    title:'!! Session Is Expiring !!',
+    text:"Session is expiring soon , Do you want to extend current session ?",
     confirmTrueText:"Yes",
     confirmFalseText:"No"
 }
