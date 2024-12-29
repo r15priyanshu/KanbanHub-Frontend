@@ -16,10 +16,10 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'admin/dashboard',component:DashboardComponent,canActivate: [adminGuard],
+  { path: 'dashboard',component:DashboardComponent,canActivate: [adminGuard],
     children: [
-      { path: 'projects',component: AdminProjectsComponent, data : {fetchAllProjectsPartial:true}, resolve : {allProjects :allProjectsResolver }},
-      { path: 'manageproject',component: AdminManageProjectComponent}
+      { path: 'admin/projects',component: AdminProjectsComponent, data : {fetchAllProjectsPartial:true}, resolve : {allProjects :allProjectsResolver }},
+      { path: 'admin/manageproject',component: AdminManageProjectComponent}
     ],
   },
   { path: '**', component: NotfoundComponent },

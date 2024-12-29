@@ -1,7 +1,7 @@
 import { UpperCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { APPLICATION_NAME } from '../../helpers/globalconstants';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { EmployeeDto } from '../../dtos/EmployeeDto';
 import { PERFORM_MANUAL_LOGOUT } from '../../helpers/custom-confirm-dialog-data';
@@ -21,7 +21,8 @@ export class NavbarComponent implements OnInit{
 
   constructor(
     private loginService:LoginService,
-    private commonComponentService:CommonComponentService
+    private commonComponentService:CommonComponentService,
+    private router:Router
   ){}
 
   ngOnInit(): void {
@@ -31,6 +32,10 @@ export class NavbarComponent implements OnInit{
       this.isLoggedIn = value
       console.log("Inside ngOnInit of NavbarComponent: Consuming : isLoggedIn = ",this.isLoggedIn);
     })
+  }
+
+  navigateFromDashboard(){
+    this.router.navigate(["/dashboard/admin/projects"])
   }
 
   handleLogout(){
