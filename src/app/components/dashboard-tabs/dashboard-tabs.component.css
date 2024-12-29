@@ -1,4 +1,10 @@
-.custom-active-link-admin-tabs{
-    font-size: 18px;
+.nav-link {
+    color: black !important; /* Default color for all links */
+}
+
+.nav-link.custom-active-link-admin-tabs {
+    font-size: 16px;
     font-weight: bold;
+    color: gray !important; /* Ensures active link style is applied */
+    background-color: var(--DASHBOARD-TABS-COLOR);
 }

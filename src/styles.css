@@ -1,3 +1,7 @@
+:root {
+    --DASHBOARD-TABS-COLOR: aliceblue;
+}
+
 /* Hide scrollbar for WebKit browsers */
 body::-webkit-scrollbar {
     display: none;
